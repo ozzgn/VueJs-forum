@@ -8,7 +8,7 @@
                 <img class="avatar-large" :src="user.avatar" alt="">
             </a>
 
-            <p class="desktop-only text-small">{{userPostCount}}</p>
+            <p class="desktop-only text-small">{{userPostCount}} posts</p>
 
         </div>
 
@@ -30,21 +30,22 @@
 </template>
 
 <script>
-export default {
-    props: {
-        post: {
-            required: true,
-            type: Object
-        }
-    },
-    computed: {
-        user () {
-            return this.$store.state.users[this.post.userId]
+    import {countObjectProperties} from '@/utils'
+    export default {
+        props: {
+            post: {
+                required: true,
+                type: Object
+            }
         },
+        computed: {
+            user () {
+                return this.$store.state.users[this.post.userId]
+            },
 
-        userPostCount () {
-            return Object.keys(this.user.posts).length
-        },
+            userPostCount () {
+                return countObjectProperties(this.user.posts)
+            },
+        }
     }
-}
 </script>   

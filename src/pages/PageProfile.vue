@@ -59,22 +59,24 @@
 <script>
     import PostList from '@/components/PostList'
     import {mapGetters} from 'vuex'
+    import {countObjectProperties} from '@/utils'
+
     export default {
         components: {
             PostList
         },
 
         computed: {
-            ...mapGetters ({
+            ...mapGetters({
                 user: 'authUser'
             }),
 
             userThreadsCounts () {
-                return this.user.threads ? Object.keys(this.user.threads).length : 0
+                return countObjectProperties(this.user.threads)
             },
 
             userPostsCounts () {
-                return this.user.posts ? Object.keys(this.user.posts).length : 0
+                return countObjectProperties(this.user.posts)
             },
 
             userPosts () {
