@@ -1,7 +1,6 @@
 <template>
     <div class="forum-listing">
         <div class="forum-details">
-            <a class="text-xlarge">{{forum.name}}</a>
             <router-link
             class="text-xlarge"
             :to="{name: 'Forum', params: {id: forum['.key']}}"
