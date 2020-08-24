@@ -34,7 +34,7 @@
 
     <div class="text-center">
     <hr>
-    <router-link 
+    <router-link
         :to="{name: 'ProfileEdit'}"
         class="btn-green btn-small"
     >
@@ -56,7 +56,7 @@ export default {
             required: true,
             type: Number
         },
-        userThreadCount: {
+        userThreadsCount: {
             required: true,
             type: Number
         }
