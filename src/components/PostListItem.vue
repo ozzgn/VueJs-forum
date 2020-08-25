@@ -8,6 +8,7 @@
                 <img class="avatar-large" :src="user.avatar" alt="">
             </a>
 
+            <p class="desktop-only text-small">{{userThreadCount}} threads</p>
             <p class="desktop-only text-small">{{userPostCount}} posts</p>
 
         </div>
@@ -31,6 +32,7 @@
 
 
         <div class="post-date text-faded">
+            <div v-if="post.edited" class="edition-info">edited</div>  
             <AppDate :timestamp="post.publishedAt"/>
         </div>
 
@@ -40,7 +42,6 @@
 </template>
 
 <script>
-    import {countObjectProperties} from '@/utils'
     import PostEditor from './PostEditor'
     export default {
         props: {
@@ -66,8 +67,12 @@
             },
 
             userPostCount () {
-                return countObjectProperties(this.user.posts)
+                return this.$store.getters.userPostsCount(this.post.userId)
             },
+
+            userThreadCount () {
+                return this.$store.getters.userThreadsCount(this.post.userId)
+            }
         }
     }
 </script>   
