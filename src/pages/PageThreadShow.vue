@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import fireBase from 'firebase'
     import PostList from '@/components/PostList'
     import PostEditor from '@/components/PostEditor'
 
@@ -50,7 +51,7 @@
                 return this.$store.getters.threadRepliesCount(this.thread['.key'])
             },
 
-            user() {
+            user () {
                 return this.$store.state.users[this.thread.userId]
             },
 
@@ -70,6 +71,10 @@
                 return Object.values(this.$store.state.posts)
                 .filter(post => postIds.includes(post['.key']))
             }
+        },
+
+        created () {
+            firebase.database().ref('threads').child(this.id)
         }
     }
 </script>

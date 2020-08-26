@@ -40,9 +40,7 @@ export default {
                 text
             }).then(thread => {
                 this.$router.push({name: 'ThreadShow', params: {id: thread['.key']}})
-            })
-            
-            
+            })  
         }, 
 
         cancel () {

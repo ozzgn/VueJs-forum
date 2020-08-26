@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import sourceData from '@/data'
 import {countObjectProperties} from '@/utils'
 
 Vue.use(Vuex)
@@ -15,14 +14,19 @@ const makeAppendChildToParentMutation = ({parent, child}) =>
     }
 
 export default new Vuex.Store({
-    state: { 
-        ...sourceData,
+    state: {
+        categories: {},
+        forums: {},
+        threads: {},
+        posts: {},
+        users: {},
         authId: 'jVa6Go6Nl1Urkag1R2p9CHTf4ny1'
     },
 
     getters: {
         authUser(state) {
-            return state.users[state.authId]
+            // return state.users[state.authId]
+            return {}
         },
 
         userThreadsCount: state => id => countObjectProperties(state.users[id].threads),
@@ -43,7 +47,6 @@ export default new Vuex.Store({
             // Append post to user
             commit('appendPostToUser', {parentId: post.userId, childId: postId})
             return Promise.resolve(state.posts[postId])
-
         },
 
         createThread ({state, commit, dispatch}, {text, title, forumId}) {
@@ -75,7 +78,7 @@ export default new Vuex.Store({
                 commit('setThread', {thread: newThread, threadId: id})
 
                 dispatch('updatePost', {id: thread.firstPostId, text})
-                    .then (() => {
+                    .then(() => {
                         resolve(newThread)
                     })
             })
