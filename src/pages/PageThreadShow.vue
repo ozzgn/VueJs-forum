@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import fireBase from 'firebase'
+    import firebase from 'firebase'
     import PostList from '@/components/PostList'
     import PostEditor from '@/components/PostEditor'
 
@@ -56,14 +56,7 @@
             },
 
             contributorsCount () {
-                // find the replies
-                const replies = Object.keys(this.thread.posts)
-                    .filter(postId => postId !== this.thread.firstPostId)
-                    .map(postId => this.$store.state.posts[postId])
-                // get the user ids
-                const userIds = replies.map(post => post.userId)
-                // count unique ids
-                return userIds.filter((item, index) => index === userIds.indexOf(item)).length
+                return countObjectProperties(this.thread.contributors)
             },
 
             posts () {
@@ -74,7 +67,25 @@
         },
 
         created () {
-            firebase.database().ref('threads').child(this.id)
+            // fetch thread
+            firebase.database().ref('threads').child(this.id).once('value', snapshot => {
+                const thread = snapshot.val()
+                console.log(thread.title);
+                this.$store.commit('setThread', {threadId: snapshot.key, thread: {...thread, '.key': snapshot.key}})
+
+                firebase.database().ref('users').child(thread.userId).once('value', snapshot => {
+                    const user = snapshot.val()
+                    this.$store.commit('setUser', {userId: snapshot.key, user: {...user, '.key': snapshot.key}})
+                })
+
+                Object.keys(thread.posts).forEach(postId => {
+                    // fetch post
+                     firebase.database().ref('posts').child(postId).once('value', snapshot => {
+                    const post = snapshot.val()
+                    this.$store.commit('setPost', {userId: snapshot.key, user: {...user, '.key': snapshot.key}})
+                    })
+                })
+            })
         }
-    }
+    } 
 </script>
