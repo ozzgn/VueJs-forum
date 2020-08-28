@@ -1,5 +1,5 @@
 <template>
-    <div class="col-large push-top">
+    <div v-if="thread && user" class="col-large push-top">
 
           <h1>{{thread.title}}
 
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import firebase from 'firebase'
+    import {countObjectProperties} from '@/utils'
     import PostList from '@/components/PostList'
     import PostEditor from '@/components/PostEditor'
 
@@ -68,24 +68,20 @@
 
         created () {
             // fetch thread
-            firebase.database().ref('threads').child(this.id).once('value', snapshot => {
-                const thread = snapshot.val()
-                console.log(thread.title);
-                this.$store.commit('setThread', {threadId: snapshot.key, thread: {...thread, '.key': snapshot.key}})
+            this.$store.dispatch('fetchThread', {id: this.id})
+                .then(thread => {
+                    // fetch user
+                    this.$store.dispatch('fetchUser', {id: thread.userId})
 
-                firebase.database().ref('users').child(thread.userId).once('value', snapshot => {
-                    const user = snapshot.val()
-                    this.$store.commit('setUser', {userId: snapshot.key, user: {...user, '.key': snapshot.key}})
-                })
-
-                Object.keys(thread.posts).forEach(postId => {
-                    // fetch post
-                     firebase.database().ref('posts').child(postId).once('value', snapshot => {
-                    const post = snapshot.val()
-                    this.$store.commit('setPost', {userId: snapshot.key, user: {...user, '.key': snapshot.key}})
+                    Object.keys(thread.posts).forEach(postId => {
+                        // fetch post
+                        this.$store.dispatch('fetchPost', {id: postId})
+                            .then(post => {
+                            // fetch user
+                            this.$store.dispatch('fetchUser', {id: post.userId})
+                        })
                     })
                 })
-            })
-        }
-    } 
+            }
+        } 
 </script>
