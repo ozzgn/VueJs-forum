@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex'
   import CategoryList from '@/components/CategoryList'
 
   export default {
@@ -21,28 +22,15 @@
       }
     },
 
-    beforeCreate() {
-      console.log('😊 beforeCreate! ozz', this.categories)
+    methods: {
+      ...mapActions(['fetchAllCategories', 'fetchForums'])
     },
 
-    created() {
-      console.log('😊 created', this.categories)
-    },
-
-    beforeMount() {
-      console.log('😊 beforeMount', this.categories)
-    },
-
-    mounted() {
-      console.log('😊 mounted', this.categories, this.$el.innerText)
-    },
-
-    beforeDestroy() {
-      console.log('😊 beforeDestroy - turn off listeners', this.categories)
-    },
-
-    destroyed() {
-      console.log('😊 destroyed', this.categories)
+    created () {
+      this.fetchAllCategories() 
+        .then(categories => {
+          categories.forEach(category => this.fetchForums({ids: Object.keys(category.forums)}))
+        })
     }
   }
 </script>
