@@ -6,6 +6,7 @@ import ThreadCreate from '@/pages/PageThreadCreate'
 import ThreadEdit from '@/pages/PageThreadEdit'
 import Category from '@/pages/PageCategory'
 import Forum from '@/pages/PageForum'
+import Register from '@/pages/PageRegister'
 import Profile from '@/pages/PageProfile'
 import NotFound from '@/pages/PageNotFound'
 
@@ -59,6 +60,11 @@ export default new Router({
       name: 'ProfileEdit',
       component: Profile,
       props: {edit: true}
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '*',
