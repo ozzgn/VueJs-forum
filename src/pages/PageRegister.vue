@@ -43,7 +43,6 @@
 
 
 <script>
-    import firebase from 'firebase'
     export default {
         data () {
             return {
@@ -59,10 +58,7 @@
         
         methods: {
             register () {
-                firebase.auth().createUserWithEmailAndPassword(this.form.email, this.form.password)
-                    .then(user => {
-                        return this.$store.dispatch('createUser', {id: user.uid, ...this.form})
-                    })
+                this.$store.dispatch('registerUserWithEmailAndPassword', this.form)
                     .then(() => this.$router.push('/'))
             }
         }, 

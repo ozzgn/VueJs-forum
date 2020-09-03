@@ -7,6 +7,7 @@ import ThreadEdit from '@/pages/PageThreadEdit'
 import Category from '@/pages/PageCategory'
 import Forum from '@/pages/PageForum'
 import Register from '@/pages/PageRegister'
+import SignIn from '@/pages/PageSignIn'
 import Profile from '@/pages/PageProfile'
 import NotFound from '@/pages/PageNotFound'
 
@@ -65,6 +66,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/signin',
+      name: 'SignIn',
+      component: SignIn
     },
     {
       path: '*',

@@ -61,7 +61,7 @@ export default {
         })
     },
 
-    createUser({state, commit}, {id, email, name, username, avatar = null}) {
+    createUser ({state, commit}, {id, email, name, username, avatar = null}) {
         return new Promise((resolve, reject) => {
             const registeredAt = Math.floor(Date.now() / 1000)
             const usernameLower = username.toLowerCase()
@@ -75,6 +75,23 @@ export default {
         })
     },
 
+    registerUserWithEmailAndPassword ({dispatch}, {email, name, username, password, avatar = null}) {
+        return firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(user => {
+            return dispatch('createUser', {id: user.user.uid, email, name, username, password, avatar})
+        })
+    },
+
+    signInWithEmailAndPassword ({context}, {email, password}) {
+        return firebase.auth().signInWithEmailAndPassword(email, password)
+    },
+
+    signOut ({commit}) {
+        return firebase.auth().signOut()
+            .then(() => {
+                commit('setAuthId', null)
+            })
+    },
 
     updateThread ({state, commit, dispatch}, {title, text, id}) {
         return new Promise((resolve, reject) => { 
@@ -119,6 +136,14 @@ export default {
 
     updateUser ({commit}, user) {
         commit('setUser', {userId: user['.key'], user})
+    },
+
+    fetchAuthUser ({dispatch, commit}) {
+        const userId = firebase.auth().currentUser.uid
+        return dispatch('fetchUser', {id: userId})
+            .then(() => {
+                commit('setAuthId', userId)
+            })
     },
 
     fetchCategory: ({dispatch}, {id}) => dispatch('fetchItem', {resource: 'categories', id, emoji: 'fetchCategory 📁'}),
