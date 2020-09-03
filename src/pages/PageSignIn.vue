@@ -24,7 +24,7 @@
             </form>
 
             <div class="push-top text-center">
-                <button class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign in with Google</button>
+                <button @click="signInWithGoogle" class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign in with Google</button>
             </div>
         </div>
     </div>
@@ -44,12 +44,17 @@
         methods: {
             signIn() {
                 this.$store.dispatch('signInWithEmailAndPassword', {
-                    email:this.form.email,
+                    email: this.form.email,
                     password: this.form.password
                 })
                     .then(() => this.$router.push('/'))
                     .catch(error => alert('📛' + error.message))
+            },
             
+            signInWithGoogle () {
+                this.$store.dispatch('signInWithGoogle')
+                    .then(() => this.$router.push('/'))
+                    .catch(error => alert('📛' + error.message))
             }
         },
 

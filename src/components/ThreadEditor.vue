@@ -51,7 +51,7 @@ export default {
         },
 
         cancel () {
-            this.emit('cancel')
+            this.$emit('cancel')
         }
     }
 }

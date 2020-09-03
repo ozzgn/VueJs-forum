@@ -34,9 +34,9 @@
                 </div>
 
             </form>
-            <!-- <div class="text-center push-top">
-                <button class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign up with Google</button>
-            </div> -->
+            <div class="text-center push-top">
+                <button @click="registerWithGoogle" class="btn-red btn-xsmall"><i class="fa fa-google fa-btn"></i>Sign up with Google</button>
+            </div>
         </div>
     </div>
 </template>
@@ -60,7 +60,13 @@
             register () {
                 this.$store.dispatch('registerUserWithEmailAndPassword', this.form)
                     .then(() => this.$router.push('/'))
+            },
+
+            registerWithGoogle () {
+                this.$store.dispatch('signInWithGoogle')
+                    .then(() => this.$router.push('/'))
             }
+
         }, 
 
         created () {
