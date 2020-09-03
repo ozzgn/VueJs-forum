@@ -102,16 +102,19 @@ router.beforeEach((to, from, next) => {
   console.log(`🍒 navigating to ${to.name} from ${from.name}`)
   console.log(to.matched)
   // Matches route with meta field to avoid reaching nested pages
-  if (to.matched.some(route => route.meta.requiresAuth)) {
-    // protected route
-    if (store.state.authId) {
-      next()
-    } else {
-      next({name: 'Home'})
-    }
-  } else {
-    next()
-  } 
+  store.dispatch('initAuthentication')
+    .then(user => {
+      if (to.matched.some(route => route.meta.requiresAuth)) {
+        // protected route
+          if (user) {
+            next()
+          } else {
+            next({name: 'Home'})
+          }
+      } else {
+        next()
+      } 
+    })
 })
 
 export default router
