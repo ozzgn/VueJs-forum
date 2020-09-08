@@ -1103,7 +1103,7 @@ header > a.logo {
 
 @media (min-width: 240px) and (max-width: 720px) {
     header > a.logo {
-        width: 35px;
+        width: 55px;
     }
 }
 
