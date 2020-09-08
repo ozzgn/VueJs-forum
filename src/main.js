@@ -6,7 +6,9 @@ import App from './App'
 import router from './router'
 import store from '@/store'
 import AppDate from '@/components/AppDate'
+import vuelidate from 'vuelidate'
 
+Vue.use(vuelidate)
 Vue.component('AppDate', AppDate)
 
 Vue.config.productionTip = false
@@ -21,6 +23,7 @@ const config = {
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
+
 firebase.initializeApp(config)
 
 /* eslint-disable no-new */
