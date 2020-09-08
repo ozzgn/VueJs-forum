@@ -43,18 +43,21 @@
 
         methods: {
             signIn() {
-                this.$store.dispatch('signInWithEmailAndPassword', {
+                this.$store.dispatch('auth/signInWithEmailAndPassword', {
                     email: this.form.email,
                     password: this.form.password
                 })
-                    .then(() => this.$router.push('/'))
+                    .then(() => this.successRedirect())
                     .catch(error => alert('📛' + error.message))
             },
-            
             signInWithGoogle () {
-                this.$store.dispatch('signInWithGoogle')
-                    .then(() => this.$router.push('/'))
+                this.$store.dispatch('auth/signInWithGoogle')
+                    .then(() => this.successRedirect())
                     .catch(error => alert('📛' + error.message))
+            },
+            successRedirect () {
+                const redirectTo = this.$route.query.redirectTo || {name: 'Home'} // $route !== !router
+                this.$router.push(redirectTo)
             }
         },
 
